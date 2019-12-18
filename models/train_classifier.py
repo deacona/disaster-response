@@ -4,8 +4,8 @@ import pandas as pd
 from sqlalchemy import create_engine
 import pickle
 
-import nltk
-nltk.download(['punkt', 'wordnet'])
+# import nltk
+# nltk.download(['punkt', 'wordnet'])
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 
@@ -87,7 +87,7 @@ def evaluate_model(model, X_test, Y_test, category_names):
     OUTPUT:
         None
     """
-    Y_pred = pipeline.predict(X_test)
+    Y_pred = model.predict(X_test)
 
     for i, col in enumerate(category_names):
         print("\n\n#########\n\n")

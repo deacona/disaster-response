@@ -51,6 +51,8 @@ def clean_data(df):
 
     # drop duplicates
     df = df[~df.duplicated(keep="first")]
+    
+    return df
 
 
 def save_data(df, database_filename):
