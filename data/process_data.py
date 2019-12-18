@@ -1,16 +1,70 @@
 import sys
+import pandas as pd
+from sqlalchemy import create_engine
 
 
 def load_data(messages_filepath, categories_filepath):
-    pass
+    """
+    INPUT:
+        messages_filepath - Filepath (including filename) for messages data file
+        categories_filepath - Filepath (including filename) for categories data file
+        
+    OUTPUT:
+        df - Dataframe of combined messages and categories data
+    """
+    
+    messages = pd.read_csv(messages_filepath)
+    categories = pd.read_csv(categories_filepath)
+
+    df = pd.merge(messages, categories, on="id", how="inner")
+
+    return df
 
 
 def clean_data(df):
-    pass
+    """
+    INPUT:
+        df - Dataframe of combined messages and categories data
+        
+    OUTPUT:
+        df - Dataframe of cleaned data
+    """
+
+    categories = df.categories.str.split(";", expand=True)
+
+    row = categories.head(1)
+    # use this row to extract a list of new column names for categories.
+    category_colnames = row.apply(lambda x: x.str.split("-")[0][0]).values
+    categories.columns = category_colnames
+
+    for column in categories:
+        # set each value to be the last character of the string
+        categories[column] = categories[column].str[-1:]
+        
+        # convert column from string to numeric
+        categories[column] = pd.to_numeric(categories[column])
+
+    df.drop(columns="categories", inplace=True)
+
+    # concatenate the original dataframe with the new `categories` dataframe
+    df = pd.concat([df, categories], axis=1)
+
+    # drop duplicates
+    df = df[~df.duplicated(keep="first")]
 
 
 def save_data(df, database_filename):
-    pass  
+    """
+    INPUT:
+        df - Dataframe of combined messages and categories data
+        database_filename - Name of SQLite file to save dataframe to
+        
+    OUTPUT:
+        None
+    """
+
+    engine = create_engine('sqlite:///{0}'.format(database_filename))
+    df.to_sql('Message', engine, index=False)  
 
 
 def main():

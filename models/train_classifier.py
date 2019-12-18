@@ -1,24 +1,111 @@
 import sys
+# import numpy as np
+import pandas as pd
+from sqlalchemy import create_engine
+import pickle
+
+import nltk
+nltk.download(['punkt', 'wordnet'])
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+
+# from sklearn.naive_bayes import GaussianNB
+from sklearn.ensemble import RandomForestClassifier #, GradientBoostingClassifier
+# from sklearn.ensemble.weight_boosting import AdaBoostClassifier
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.model_selection import train_test_split#, GridSearchCV
+from sklearn.metrics import classification_report
+# from sklearn.multioutput import MultiOutputClassifier
 
 
 def load_data(database_filepath):
-    pass
+    """
+    INPUT:
+        database_filepath - Name of SQLite file to load dataframe from
+        
+    OUTPUT:
+        X - Input Features
+        Y - Target labels
+        category_names - Column names for target labels
+    """
+    engine = create_engine('sqlite:///{0}'.format(database_filepath))
+    df = pd.read_sql_table("Message", con=engine)
+    X = df.message.values
+
+    non_cat = ["id", "message", "original", "genre"]
+    Y = df.drop(columns=non_cat).values
+    category_names = df.drop(columns=non_cat).columns
+
+    return X, Y, category_names
 
 
 def tokenize(text):
-    pass
+    """
+    INPUT:
+        text - Single message as text string 
+        
+    OUTPUT:
+        clean_tokens - Cleaned, normalized, tokenized and lemmatized words
+    """
+    tokens = word_tokenize(text)
+    lemmatizer = WordNetLemmatizer()
+
+    clean_tokens = []
+    for tok in tokens:
+        clean_tok = lemmatizer.lemmatize(tok).lower().strip()
+        clean_tokens.append(clean_tok)
+
+    return clean_tokens
 
 
 def build_model():
-    pass
+    """
+    INPUT:
+        None
+        
+    OUTPUT:
+        pipeline - Classification model pipeline
+    """
+    pipeline = Pipeline([
+            ("vect", CountVectorizer(tokenizer=tokenize)),
+            ("tfidf", TfidfTransformer()),
+            ("clf", RandomForestClassifier()),
+        ])
+
+    return pipeline
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
-    pass
+    """
+    INPUT:
+        model - Trained classification model
+        X_test - Input Features (test data only)
+        Y_test - Target labels (test data only)
+        category_names - Column names for target labels
+        
+    OUTPUT:
+        None
+    """
+    Y_pred = pipeline.predict(X_test)
+
+    for i, col in enumerate(category_names):
+        print("\n\n#########\n\n")
+        print("{0}: {1}\n".format(i, col))
+        print(classification_report(Y_test[i], Y_pred[i]))
 
 
 def save_model(model, model_filepath):
-    pass
+    """
+    INPUT:
+        model - Trained classification model
+        model_filepath - Filepath (including filename) for model pickle file
+        
+    OUTPUT:
+        None
+    """
+    with open(model_filepath, "wb") as p:
+        pickle.dump(model, p)
 
 
 def main():
