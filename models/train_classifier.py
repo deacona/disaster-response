@@ -65,7 +65,7 @@ def build_model():
         None
         
     OUTPUT:
-        cv - Classification model
+        Classification model
     """
     pipeline = Pipeline([
             ("vect", CountVectorizer(tokenizer=tokenize)),
@@ -76,11 +76,11 @@ def build_model():
     # return pipeline
     
     parameters = {
-        'vect__ngram_range': ((1, 1), (1, 2)),
-        'vect__max_df': (0.5, 0.75, 1.0),
-        'vect__max_features': (None, 5000),
-    #     'tfidf__use_idf': (True, False),
-        'clf__estimator__n_estimators': [10, 100],
+        # 'vect__ngram_range': ((1, 1), (1, 2)),
+        # 'vect__max_df': (0.5, 0.75, 1.0),
+        # 'vect__max_features': (None, 5000),
+        # 'tfidf__use_idf': (True, False),
+        # 'clf__estimator__n_estimators': [10, 100],
         'clf__estimator__min_samples_split': [2, 3, 4],
     }
 
