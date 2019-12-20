@@ -14,9 +14,9 @@ from sklearn.ensemble import RandomForestClassifier #, GradientBoostingClassifie
 # from sklearn.ensemble.weight_boosting import AdaBoostClassifier
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.model_selection import train_test_split#, GridSearchCV
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import classification_report
-# from sklearn.multioutput import MultiOutputClassifier
+from sklearn.multioutput import MultiOutputClassifier
 
 
 def load_data(database_filepath):
@@ -65,15 +65,28 @@ def build_model():
         None
         
     OUTPUT:
-        pipeline - Classification model pipeline
+        cv - Classification model
     """
     pipeline = Pipeline([
             ("vect", CountVectorizer(tokenizer=tokenize)),
             ("tfidf", TfidfTransformer()),
-            ("clf", RandomForestClassifier()),
+            ("clf", MultiOutputClassifier(RandomForestClassifier())),
         ])
 
-    return pipeline
+    # return pipeline
+    
+    parameters = {
+        'vect__ngram_range': ((1, 1), (1, 2)),
+        'vect__max_df': (0.5, 0.75, 1.0),
+        'vect__max_features': (None, 5000),
+    #     'tfidf__use_idf': (True, False),
+        'clf__estimator__n_estimators': [10, 100],
+        'clf__estimator__min_samples_split': [2, 3, 4],
+    }
+
+    cv = GridSearchCV(pipeline, param_grid=parameters)
+
+    return cv
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
