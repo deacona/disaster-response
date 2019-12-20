@@ -1,10 +1,13 @@
 # Disaster Response Pipeline Project
  (Udacity DSND Project: Disaster Response Pipeline)
 
+ This project is intended to analyze disaster data from Figure Eight to build a model for an API that classifies disaster messages.
+
+
 ## Table of Contents
 
 1. [Instructions](#instructions)
-2. [Motivation](#motivation)
+2. [Results](#results)
 3. [Project Organisation](#project)
 5. [Licensing, Authors, and Acknowledgements](#licensing)
 
@@ -26,9 +29,7 @@ This project requires Python 3.x and all the libraries found in the [requirement
 3. Go to http://0.0.0.0:3001/
 
 
-## Motivation <a name="motivation"></a>
-
-This project is intended to analyze disaster data from Figure Eight to build a model for an API that classifies disaster messages.
+## Results <a name="results"></a>
 
 Message are categorised into none, one or more of the following 36 categories: 
 
@@ -41,14 +42,13 @@ Message are categorised into none, one or more of the following 36 categories:
 |hospitals|shops|aid_centers|other_infrastructure|weather_related|floods|
 |storm|fire|earthquake|cold|other_weather|direct_report|
 
+![Distribution of Message Categories](plot_categories.png)
+
+![Distribution of Message Genres](plot_genres.png)
+
 
 ## Project Organisation <a name="project"></a>
 
-    ├── LICENSE                         <- Standard license file
-    ├── README.md                       <- The top-level README for developers using this project.
-    ├── requirements.txt                <- The requirements file for reproducing the analysis environment,
-    │                                       generated with `pip freeze > requirements.txt`
-    │
     ├── app                             
     │   ├── templates                    
     │   |   ├── go.html                 <- Classification result page of web app
@@ -61,9 +61,16 @@ Message are categorised into none, one or more of the following 36 categories:
     │   ├── DisasterResponse.db         <- SQLite database to save clean data to (not included in repo)
     │   └── process_data.py             <- Loads, cleans and stores the data
     │
-    └── models                          
-        ├── classifier.pkl              <- Saved model (not included in repo)
-        └── train_classifier.py         <- Builds, trains, evaluates and outputs model
+    ├── models                          
+    │   ├── classifier.pkl              <- Saved model (not included in repo)
+    │   └── train_classifier.py         <- Builds, trains, evaluates and outputs model
+    │
+    ├── LICENSE                         <- Standard license file
+    ├── plot_categories.png             <- Category distribution plot (downloaded from app)
+    ├── plot_genres.png                 <- Genre distribution plot (downloaded from app)
+    ├── README.md                       <- The top-level README for developers using this project.
+    └── requirements.txt                <- The requirements file for reproducing the analysis environment,
+                                            generated with `pip freeze > requirements.txt`
 
 
 ## Licensing, Authors, Acknowledgements <a name="licensing"></a>

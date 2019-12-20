@@ -50,7 +50,7 @@ def index():
         'electricity', 'tools', 'hospitals', 'shops', 'aid_centers',
         'other_infrastructure', 'weather_related', 'floods', 'storm', 'fire',
         'earthquake', 'cold', 'other_weather', 'direct_report']
-    cat_counts = df[cat_names].sum()
+    cat_counts = df[cat_names].sum().sort_values(ascending=False)
     
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
