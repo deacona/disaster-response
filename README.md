@@ -14,7 +14,7 @@
 
 ## Instructions <a name="instructions"></a>
 
-This project requires Python 3.x and all the libraries found in the [requirements.txt](requirements.txt) file.
+This project requires Python 3.x and the libraries found in the [requirements.txt](requirements.txt) file.
 
 1. Run the following commands in the project's root directory to set up your database and model.
 
@@ -31,7 +31,28 @@ This project requires Python 3.x and all the libraries found in the [requirement
 
 ## Results <a name="results"></a>
 
-Message are categorised into none, one or more of the following 36 categories: 
+### Data processing
+
+* Combine message and category data sources
+* Split categories into separate category columns with binary values (Note some of the training data had 2s which I modifed to 1s)
+* Remove duplicated messages
+* Remove meaningless messages (There is a #NAME? in the training data which looks like a spreadsheet error)
+* Save processed data
+
+### Classifier training
+
+* Load processed data
+* Clean, normalize, tokenize and lemmatize words
+* Vectorize word counts
+* Transform to a TF-IDF representation
+* Use a Random Forest classifier within a multi-output strategy
+* Perform Grid Search cross-validation to tune the hyperparameters
+* Fit, evaluate and then save the model
+
+
+### Web app
+
+Inputted messages are categorised into none, one or more of the following 36 categories: 
 
 | | | | | | |
 | --- | --- | --- | --- | --- | --- |
@@ -43,6 +64,8 @@ Message are categorised into none, one or more of the following 36 categories:
 |storm|fire|earthquake|cold|other_weather|direct_report|
 
 ![Distribution of Message Categories](plot_categories.png)
+
+Some of the categories were much more prevalent in the training data so we are likely to have more reliable results for these than some of the less frequently occuring ones. None of the training data was flagged with "child_alone" so we cannot currently use the model to predict this category.
 
 ![Distribution of Message Genres](plot_genres.png)
 

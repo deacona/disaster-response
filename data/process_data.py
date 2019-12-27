@@ -43,14 +43,23 @@ def clean_data(df):
         
         # convert column from string to numeric
         categories[column] = pd.to_numeric(categories[column])
+    
+    # replace any integers > 1 with 1
+    categories.replace([2, 3, 4, 5, 6, 7, 8, 9], 1, inplace=True)
 
     df.drop(columns="categories", inplace=True)
 
     # concatenate the original dataframe with the new `categories` dataframe
     df = pd.concat([df, categories], axis=1)
 
-    # drop duplicates
+    # drop complete data duplicates
     df = df[~df.duplicated(keep="first")]
+
+    # drop message duplicates
+    df = df[~df.message.duplicated(keep="last")]
+
+    # drop corrupted messages
+    df = df[~(df.message == "#NAME?")]
     
     return df
 

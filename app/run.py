@@ -76,7 +76,7 @@ def index():
         {
             'data': [
                 Bar(
-                    x=cat_names,
+                    x=cat_counts.index,
                     y=cat_counts
                 )
             ],
