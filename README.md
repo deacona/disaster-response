@@ -33,22 +33,15 @@ This project requires Python 3.x and the libraries found in the [requirements.tx
 
 ### Data processing
 
-* Combine message and category data sources
-* Split categories into separate category columns with binary values (Note some of the training data had 2s which I modifed to 1s)
-* Remove duplicated messages
-* Remove meaningless messages (There is a #NAME? in the training data which looks like a spreadsheet error)
-* Save processed data
+* When converting category field into binary values, some 2s are present which are modified to 1s
+* Some messages are duplicated. The duplicates are removed.
+* Some messages appear to be meaningless. There is a "#NAME?" in the training data which looks like a spreadsheet artefact. This is also removed.
 
 ### Classifier training
 
-* Load processed data
-* Clean, normalize, tokenize and lemmatize words
-* Vectorize word counts
-* Transform to a TF-IDF representation
-* Use a Random Forest classifier within a multi-output strategy
-* Perform Grid Search cross-validation to tune the hyperparameters
-* Fit, evaluate and then save the model
-
+* The modelling pipeline comprises a Vectorizer with custom tokenizer, a TF-IDF transformation, a Random Forest classifier within a multi-output strategy, and Grid Search Cross Validation
+* The custom tokenizer also lemmatizes the words, lower-cases, and strips leading and trailing whitespace
+* Because of the lengthy process of grid-searching across multiple hyperparameters, some parameters are pre-selected based on separate grid searches
 
 ### Web app
 
@@ -65,7 +58,7 @@ Inputted messages are categorised into none, one or more of the following 36 cat
 
 ![Distribution of Message Categories](plot_categories.png)
 
-Some of the categories were much more prevalent in the training data so we are likely to have more reliable results for these than some of the less frequently occuring ones. None of the training data was flagged with "child_alone" so we cannot currently use the model to predict this category.
+Some of the categories are much more prevalent in the training data so we are likely to have more reliable results for these than some of the less frequently occuring ones. Indeed, none of the training data was flagged with "child_alone" so we cannot currently use the model to predict this category. One way we could make our dataset more balanced - and hence produce more reliable results - would be **over-sampling** (i.e. adding more samples for under-represented classes). 
 
 ![Distribution of Message Genres](plot_genres.png)
 
