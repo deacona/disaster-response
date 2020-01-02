@@ -88,6 +88,7 @@ Highlighted categories have been selected by the model. I have also included a p
     │   └── train_classifier.py         <- Builds, trains, evaluates and outputs model
     │
     ├── LICENSE                         <- Standard license file
+    ├── list_results_example.png        <- Example results screenshot (downloaded from app)
     ├── plot_categories.png             <- Category distribution plot (downloaded from app)
     ├── plot_genres.png                 <- Genre distribution plot (downloaded from app)
     ├── README.md                       <- The top-level README for developers using this project.
