@@ -56,11 +56,17 @@ Inputted messages are categorised into none, one or more of the following 36 cat
 |hospitals|shops|aid_centers|other_infrastructure|weather_related|floods|
 |storm|fire|earthquake|cold|other_weather|direct_report|
 
+![Distribution of Message Genres](plot_genres.png)
+
 ![Distribution of Message Categories](plot_categories.png)
 
-Some of the categories are much more prevalent in the training data so we are likely to have more reliable results for these than some of the less frequently occuring ones. Indeed, none of the training data was flagged with "child_alone" so we cannot currently use the model to predict this category. One way we could make our dataset more balanced - and hence produce more reliable results - would be **over-sampling** (i.e. adding more samples for under-represented classes). 
+Some of the categories are much more prevalent in the training data so we are likely to have more reliable results for these than some of the less frequently occuring ones. Indeed, none of the training data was flagged with "child_alone" so we cannot currently use the model to predict this category. One way we could make our dataset more balanced - and hence produce more reliable results - would be **over-sampling** (i.e. adding more samples for under-represented classes).
 
-![Distribution of Message Genres](plot_genres.png)
+#### Example of Classification Results
+
+![Example of Classification Results](list_results_example.png)
+
+Highlighted categories have been selected by the model. I have also included a probability to further quantify the likelihood of each classification being correct.
 
 
 ## Project Organisation <a name="project"></a>
