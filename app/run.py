@@ -108,8 +108,16 @@ def go():
     query = request.args.get('query', '') 
 
     # use model to predict classification for query
-    classification_labels = model.predict([query])[0]
-    classification_results = dict(zip(df.columns[4:], classification_labels))
+    classification_probabilties = []
+    for p in model.predict_proba([query]):
+    #     print(p, end=", ")
+        try:
+    #         print(p[0][1])
+            p1 = p[0][1]
+        except:
+            p1 = 0.0
+        classification_probabilties.append(p1)
+    classification_results = dict(zip(df.columns[4:], classification_probabilties))
 
     # This will render the go.html Please see that file. 
     return render_template(
